@@ -61,7 +61,7 @@ class AuthController extends Controller
         if ($user->hasRole('admin')) {
             return redirect()->route('dashboard')->with('success', 'Login successful');
         } else if ($user->hasRole('kandang')) {
-            return redirect()->route('home')->with('success', 'Login successful');
+            return redirect()->route('dashboard_kandang')->with('success', 'Login successful');
         }
     }
 

@@ -5,12 +5,14 @@ use App\Mail\WelcomeMail;
 use App\Mail\CustomerPasswordMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LaporanAdmin;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KandangController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\PendapatanController;
 use App\Http\Controllers\JenisProdukController;
+use App\Http\Controllers\LaporanKandangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,7 +82,14 @@ Route::middleware('auth')->group(function () {
     Route::put('edit-pengeluaran/{id}', [KandangController::class, 'update'])->name('tambah-pengeluaran.update');
     Route::delete('hapus-pengeluaran/{id}', [KandangController::class, 'destroy'])->name('tambah-pengeluaran.destroy');
     Route::get('/customers/ubah-status/{id}', [CustomerController::class, 'ubahStatus'])->name('customers.ubah-status');
-
+    // route laporan admin
+    Route::get('laporan-admin', [LaporanAdmin::class, 'index'])->name('laporan-admin.index');
+    Route::get('laporan-admin/{id}', [LaporanAdmin::class, 'show'])->name('laporan-admin.show');
+    // laporkan kandang
+    Route::get('laporkan-kandang', [LaporanKandangController::class, 'index'])->name('laporkan-kandang.index');
+    Route::get('laporkan-kandang/{id}', [LaporanKandangController::class, 'show'])->name('laporkan-kandang.show');
+    // print laporan
+    Route::get('print-laporan/{id}', [LaporanKandangController::class, 'print'])->name('print-laporan');
     Route::get('/logout', function () {
         auth()->logout();
         return redirect()->route('login')->with('success', 'Logout successful');

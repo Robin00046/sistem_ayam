@@ -17,6 +17,14 @@
         <span>Management Pendapatan</span>
       </a>
     </li>
+    <li class="nav-item">
+      {{-- <a class="nav-link" href="#"> --}}
+        <a class="nav-link {{ Request::is('laporkan-kandang') ? '' :'collapsed' }}"  href="{{ route('laporkan-kandang.index') }}">
+          <i class="bi bi-people"></i>
+        <span>Laporan</span>
+      </a>
+    </li>
+
   </ul>
 
 </aside><!-- End Sidebar-->

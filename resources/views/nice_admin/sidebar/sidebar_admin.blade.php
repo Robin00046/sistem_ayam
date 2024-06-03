@@ -30,6 +30,16 @@
           <span>Management Product</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <a class="nav-link {{ Request::is('laporan-admin') ? '' :'collapsed' }}"  href="{{ route('laporan-admin.index') }}">
+          <i class="bi bi-table"></i>
+          <span>Management Report</span>
+
+        </a>
+      </li>
+      
+
     </ul>
 
   </aside><!-- End Sidebar-->
