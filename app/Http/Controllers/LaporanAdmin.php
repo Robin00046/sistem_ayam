@@ -23,7 +23,7 @@ class LaporanAdmin extends Controller
     {
         //
         $user = User::find($id);
-        $date = Pengeluaran::selectRaw('DATE_FORMAT(created_at, "%M %Y") as date')->distinct()->get();
+        $date = Pengeluaran::selectRaw('DATE_FORMAT(created_at, "%M %Y") as date')->where('kandang_id', $id)->distinct()->get();
         if ($request->date) {
             $pengeluaran = Pengeluaran::where('kandang_id', $id)->whereRaw("DATE_FORMAT(created_at, '%M %Y') = '$request->date'")->with('jenisProduk')->latest()->get();
             $pengeluaran_perbulan_tahun = Pengeluaran::where('kandang_id', $id)->whereRaw("DATE_FORMAT(created_at, '%M %Y') = '$request->date'")->get();
