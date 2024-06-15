@@ -71,9 +71,9 @@ class LaporanAdmin extends Controller
         $id = User::find($id);
         // date = May 2021
         // get pendapatan where MonthYear(created_at) = date
-        $pendapatan = Pendapatan::whereRaw("DATE_FORMAT(created_at, '%M %Y') = '$date'")->get();
+        $pendapatan = Pendapatan::whereRaw("DATE_FORMAT(created_at, '%M %Y') = '$date'")->where('id_kandang', $id)->get();
         // get pengeluaran where MonthYear(created_at) = date
-        $pengeluaran = Pengeluaran::whereRaw("DATE_FORMAT(created_at, '%M %Y') = '$date'")->get();
+        $pengeluaran = Pengeluaran::whereRaw("DATE_FORMAT(created_at, '%M %Y') = '$date'")->where('kandang_id', $id)->get();
         // get total pendapatan
         $total_pendapatan = number_format($pendapatan->sum('total'), 0, ',', '.');
         // get total pengeluaran
