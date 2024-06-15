@@ -25,6 +25,34 @@ class LaporanKandangController extends Controller
             $pengeluaran_perbulan_tahun = Pengeluaran::where('kandang_id', $id)->get();
         }
 
+        if ($pengeluaran_perbulan_tahun->isEmpty()) {
+            $data = [];
+        } else {
+            foreach ($pengeluaran_perbulan_tahun as $key => $value) {
+                $jumlah_total_pengeluaran_perbulan_tahun[$value->created_at] = $pengeluaran_perbulan_tahun->where('created_at', $value->created_at)->sum('total');
+            }
+            // foreach ($pengeluaran_perbulan_tahun as $key => $value) {
+            //     $jumlah_total_pengeluaran_perbulan_tahun[$value->created_at] = $pengeluaran_perbulan_tahun->where('created_at', $value->created_at)->sum('total');
+            // }
+
+            $pendapatan_perbulan_tahun = Pendapatan::where('id_kandang', $id)->get();
+            // dd($pendapatan_perbulan_tahun);
+            foreach ($pendapatan_perbulan_tahun as $key => $value) {
+                $jumlah_total_pendapatan_perbulan_tahun[$value->created_at] = $pendapatan_perbulan_tahun->where('created_at', $value->created_at)->sum('total');
+                // dd($jumlah_total_pendapatan_perbulan_tahun);
+            }
+            // gabungkan pengeluaran dan pendapatan
+
+            $data = [];
+            foreach ($jumlah_total_pengeluaran_perbulan_tahun as $key => $value) {
+                $data[$key] = [
+                    'bulan' => $key,
+                    'pengeluaran' => $value,
+                    'pemasukan' => $jumlah_total_pendapatan_perbulan_tahun[$key] ?? 0,
+                    'keuntungan' => ($jumlah_total_pendapatan_perbulan_tahun[$key] ?? 0) - $value
+                ];
+            }
+        }
 
 
 
@@ -33,28 +61,7 @@ class LaporanKandangController extends Controller
 
 
 
-        foreach ($pengeluaran_perbulan_tahun as $key => $value) {
-            $jumlah_total_pengeluaran_perbulan_tahun[$value->created_at] = $pengeluaran_perbulan_tahun->where('created_at', $value->created_at)->sum('total');
-        }
 
-        $pendapatan_perbulan_tahun = Pendapatan::where('id_kandang', $id)->get();
-        // dd($pendapatan_perbulan_tahun);
-        foreach ($pendapatan_perbulan_tahun as $key => $value) {
-            $jumlah_total_pendapatan_perbulan_tahun[$value->created_at] = $pendapatan_perbulan_tahun->where('created_at', $value->created_at)->sum('total');
-            // dd($jumlah_total_pendapatan_perbulan_tahun);
-        }
-
-        // gabungkan pengeluaran dan pendapatan
-
-        $data = [];
-        foreach ($jumlah_total_pengeluaran_perbulan_tahun as $key => $value) {
-            $data[$key] = [
-                'bulan' => $key,
-                'pengeluaran' => $value,
-                'pemasukan' => $jumlah_total_pendapatan_perbulan_tahun[$key] ?? 0,
-                'keuntungan' => ($jumlah_total_pendapatan_perbulan_tahun[$key] ?? 0) - $value
-            ];
-        }
 
 
 

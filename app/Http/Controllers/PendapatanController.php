@@ -15,7 +15,7 @@ class PendapatanController extends Controller
     public function index()
     {
         // get all pendapatan
-        $pendapatans = Pendapatan::all();
+        $pendapatans = Pendapatan::where('id_kandang', Auth::user()->id)->get();
         return view('pendapatan.index', compact('pendapatans'));
     }
 
