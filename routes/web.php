@@ -36,9 +36,7 @@ use App\Http\Controllers\LaporanKandangController;
 // });
 Route::middleware('guest')->group(function () {
     Route::get('/', function () {
-        //get all product
-        $products = Products::latest()->get();
-        return view('welcome', compact('products'));
+        return redirect()->route('login');
     });
     Route::get('/registrasi', function () {
         return view('registrasi');
