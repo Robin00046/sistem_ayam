@@ -42,8 +42,9 @@ class CustomerController extends Controller
             'name' => 'required',
             'alamat' => 'required',
             'phone' => 'required|numeric',
+            'password' => 'required'
         ]);
-        $password = "password";
+        $password = $request->password;
         $user = User::create([
             'name' => $request->name,
             'alamat' => $request->alamat,
@@ -92,9 +93,12 @@ class CustomerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        //
+        // delete customer
+        $user = User::find($id);
+        $user->delete();
+        return redirect()->route('customers.index')->with('success', 'Customer deleted successfully');
     }
 
     public function ubahStatus($id)

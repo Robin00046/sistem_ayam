@@ -178,6 +178,14 @@
                           <div class="text-danger">{{ $message }}</div>
                       @enderror
                   </div>  
+                  <div class="form-group">
+                      <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password">
+                        @error('password')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+
+                  </div>
                   
               </div>
               <div class="modal-footer">
