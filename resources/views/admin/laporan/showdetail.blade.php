@@ -24,7 +24,6 @@
                 <h1>Daftar Pendapatan</h1>
             </div>
         </div>
-        
         <!-- Print window -->
         <div class="row mt-2">
             <div class="col-md-6">

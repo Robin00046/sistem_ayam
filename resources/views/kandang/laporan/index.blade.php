@@ -19,6 +19,33 @@
                 <h1>{{ Auth::user()->name }}</h1>
             </div>
         </div>
+        <div class="row mt-2">
+            <form action="{{ route('laporkan-kandang.index') }}" method="GET">
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                        <div class="form-group
+                        ">
+                            <label for="date">Bulan</label>
+                            <select name="date" id="date" class="form-control">
+                                <option value="">Pilih Bulan</option>
+                                @foreach ($date as $item)
+                                    <option value="{{ $item['date'] }}" {{ request()->get('date') == $item['date'] ? 'selected' : '' }}>{{ $item['date'] }}</option>
+                                @endforeach
+                            </select>
+                        </div> 
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                        <a href="{{ route('laporkan-kandang.index') }}" class="btn btn-danger">Reset</a>
+                    </div>
+
+
+                </div>
+            </form>
+        </div>
+
 
         <table class="table">
             <thead>

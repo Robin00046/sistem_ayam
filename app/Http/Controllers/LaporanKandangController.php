@@ -11,16 +11,27 @@ use Illuminate\Support\Facades\Auth;
 class LaporanKandangController extends Controller
 {
     // index laporan
-    public function index()
+    public function index(Request $request)
     {
         //
         $id = Auth::user()->id;
+        // get bulan dan tahun dari created_at
+        $date = Pengeluaran::selectRaw('DATE_FORMAT(created_at, "%M %Y") as date')->distinct()->get();
+        if ($request->date) {
+            $pengeluaran = Pengeluaran::where('kandang_id', $id)->whereRaw("DATE_FORMAT(created_at, '%M %Y') = '$request->date'")->with('jenisProduk')->latest()->get();
+            $pengeluaran_perbulan_tahun = Pengeluaran::where('kandang_id', $id)->whereRaw("DATE_FORMAT(created_at, '%M %Y') = '$request->date'")->get();
+        } else {
+            $pengeluaran = Pengeluaran::where('kandang_id', $id)->with('jenisProduk')->latest()->get();
+            $pengeluaran_perbulan_tahun = Pengeluaran::where('kandang_id', $id)->get();
+        }
 
-        $pengeluaran = Pengeluaran::where('kandang_id', $id)->with('jenisProduk')->latest()->get();
+
+
+
         // dd($pengeluaran);
         $jenisProduks = JenisProduk::all();
 
-        $pengeluaran_perbulan_tahun = Pengeluaran::where('kandang_id', $id)->get();
+
 
         foreach ($pengeluaran_perbulan_tahun as $key => $value) {
             $jumlah_total_pengeluaran_perbulan_tahun[$value->created_at] = $pengeluaran_perbulan_tahun->where('created_at', $value->created_at)->sum('total');
@@ -46,10 +57,8 @@ class LaporanKandangController extends Controller
         }
 
 
-        // dd($data);
 
-
-        return view('kandang.laporan.index', compact('pengeluaran', 'jenisProduks', 'data'));
+        return view('kandang.laporan.index', compact('pengeluaran', 'jenisProduks', 'data', 'date'));
     }
 
     public function show($date)

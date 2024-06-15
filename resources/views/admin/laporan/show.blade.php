@@ -19,6 +19,30 @@
                 <h1>{{ $user->name }}</h1>
             </div>
         </div>
+        <form action="{{ route('laporan-admin.show', $user->id) }}" method="GET">
+            <div class="row mt-2">
+                <div class="col-md-6">
+                    <div class="form-group
+                    ">
+                        <label for="date">Bulan</label>
+                        <select name="date" id="date" class="form-control">
+                            <option value="">Pilih Bulan</option>
+                            @foreach ($date as $item)
+                                <option value="{{ $item['date'] }}" {{ request()->get('date') == $item['date'] ? 'selected' : '' }}>{{ $item['date'] }}</option>
+                            @endforeach
+                        </select>
+                    </div> 
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                    <a href="{{ route('laporan-admin.show', $user->id) }}" class="btn btn-danger">Reset</a>
+                </div>
+
+
+            </div>
+        </form>
 
         <table class="table">
             <thead>
@@ -27,6 +51,7 @@
                     <th>Total Pengeluaran</th>
                     <th>Total Pemasukan</th>
                     <th>Keuntungan</th>
+                    <th>Actions</th>
 
                 </tr>
             </thead>
@@ -38,6 +63,9 @@
                         <td>Rp. {{ number_format($item['pengeluaran']) }}</td>
                         <td>Rp. {{ number_format($item['pemasukan']) }}</td>
                         <td>Rp. {{ number_format($item['keuntungan']) }}</td>
+                        <td>
+                            <a href="{{ route('print-laporan-admin',['date' => $item['bulan'], 'id' => $user->id]) }}" class="btn btn-primary" title="Print Laporan" target="_blank" ><i class="bi bi-printer"></i></a>
+                        </td>
                         
                         
                     </tr>

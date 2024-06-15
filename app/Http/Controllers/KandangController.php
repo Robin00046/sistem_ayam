@@ -78,10 +78,12 @@ class KandangController extends Controller
     {
         // dd($request->all());
         // update pengeluaran
+        $jenisProduks = JenisProduk::where('id', $request->jenis_produk_id)->first();
         $pengeluaran = Pengeluaran::find($id);
         $pengeluaran->update([
             'jenis_produk_id' => $request->jenis_produk_id,
             'jumlah' => $request->jumlah,
+            'total' => $request->jumlah * $jenisProduks->harga,
         ]);
         return back();
     }

@@ -85,6 +85,8 @@ Route::middleware('auth')->group(function () {
     // route laporan admin
     Route::get('laporan-admin', [LaporanAdmin::class, 'index'])->name('laporan-admin.index');
     Route::get('laporan-admin/{id}', [LaporanAdmin::class, 'show'])->name('laporan-admin.show');
+    // print laporan admin
+    Route::get('print-laporan-admin/{id}/{date}', [LaporanAdmin::class, 'print'])->name('print-laporan-admin');
     // laporkan kandang
     Route::get('laporkan-kandang', [LaporanKandangController::class, 'index'])->name('laporkan-kandang.index');
     Route::get('laporkan-kandang/{id}', [LaporanKandangController::class, 'show'])->name('laporkan-kandang.show');
