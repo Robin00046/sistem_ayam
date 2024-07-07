@@ -1,8 +1,12 @@
 <?php
 
+use App\Models\User;
 use App\Models\Products;
 use App\Mail\WelcomeMail;
+use App\Models\JenisProduk;
+use App\Models\Pengeluaran;
 use App\Mail\CustomerPasswordMail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LaporanAdmin;
@@ -13,6 +17,7 @@ use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\PendapatanController;
 use App\Http\Controllers\JenisProdukController;
 use App\Http\Controllers\LaporanKandangController;
+use App\Models\Pendapatan;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,26 +55,67 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard_kandang', function () {
-        return view('dashboard_kandang');
+        //
+        $id = Auth::user()->id;
+        // get bulan dan tahun dari created_at
+        $date = Pengeluaran::selectRaw('DATE_FORMAT(created_at, "%M %Y") as date')->where('kandang_id', $id)->distinct()->get();
+
+        $pengeluaran = Pengeluaran::where('kandang_id', $id)->with('jenisProduk')->latest()->get();
+        $pengeluaran_perbulan_tahun = Pengeluaran::where('kandang_id', $id)->orderBy('created_at', 'desc')->get();
+        if ($pengeluaran_perbulan_tahun->isEmpty()) {
+            $data = [];
+        } else {
+            $jumlah_total_pengeluaran_perbulan_tahun = $pengeluaran_perbulan_tahun->groupBy('created_at')->map(function ($item) {
+                return $item->sum('total');
+            });
+            // foreach ($pengeluaran_perbulan_tahun as $key => $value) {
+            //     $jumlah_total_pengeluaran_perbulan_tahun[$value->created_at] = $pengeluaran_perbulan_tahun->where('created_at', $value->created_at)->sum('total');
+            // }
+            // foreach ($pengeluaran_perbulan_tahun as $key => $value) {
+            //     $jumlah_total_pengeluaran_perbulan_tahun[$value->created_at] = $pengeluaran_perbulan_tahun->where('created_at', $value->created_at)->sum('total');
+            // }
+
+            $pendapatan_perbulan_tahun = Pendapatan::where('id_kandang', $id)->orderBy('created_at', 'desc')->get();
+            // dd($pendapatan_perbulan_tahun);
+            // dd($pendapatan_perbulan_tahun);
+            foreach ($pendapatan_perbulan_tahun as $key => $value) {
+                $jumlah_total_pendapatan_perbulan_tahun[$value->created_at] = $pendapatan_perbulan_tahun->where('created_at', $value->created_at)->sum('total');
+                // dd($jumlah_total_pendapatan_perbulan_tahun);
+            }
+            // gabungkan pengeluaran dan pendapatan
+
+            $data = [];
+            foreach ($jumlah_total_pengeluaran_perbulan_tahun as $key => $value) {
+                $data[$key] = [
+                    'bulan' => $key,
+                    'pengeluaran' => $value,
+                    'pemasukan' => $jumlah_total_pendapatan_perbulan_tahun[$key] ?? 0,
+                    'keuntungan' => ($jumlah_total_pendapatan_perbulan_tahun[$key] ?? 0) - $value
+                ];
+            }
+        }
+        // ambil data pertama
+        // dd($data);
+        $test = $data[array_key_first($data)];
+        // dd($test);
+        return view('dashboard_kandang', compact('test'));
     })->name('dashboard_kandang');
     Route::resource('pendapatan', PendapatanController::class);
     Route::get('/dashboard', function () {
-        // customer active
-        $customer_active = \App\Models\User::where('status', 'active')->whereHas('roles', function ($query) {
-            $query->where('name', 'customer');
+        // kandang active
+        $customer_active = User::where('status', 'active')->whereHas('roles', function ($query) {
+            $query->where('name', 'kandang');
         })->count();
-        // customer inactive
-        $customer_inactive = \App\Models\User::where('status', 'inactive')->whereHas('roles', function ($query) {
-            $query->where('name', 'customer');
+        // kandang inactive
+        $customer_inactive = User::where('status', 'inactive')->whereHas('roles', function ($query) {
+            $query->where('name', 'kandang');
         })->count();
-        // product active
-        $product_active = Products::where('status', '1')->count();
-        // product inactive
-        $product_inactive = Products::where('status', '0')->count();
+        // jumlah produk 
+        $product_active = JenisProduk::all()->count();
         // ambil product 10 terakhir yang diinput
         $products = Products::take(10)->latest()->get();
         // dd($products);
-        return view('dashboard', compact('products', 'customer_active', 'customer_inactive', 'product_active', 'product_inactive'));
+        return view('dashboard', compact('products', 'customer_active', 'customer_inactive', 'product_active'));
     })->name('dashboard');
     Route::resource('products', ProductsController::class);
     Route::resource('jenis-produk', JenisProdukController::class);

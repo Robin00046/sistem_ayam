@@ -16,11 +16,11 @@
                 @endif
         <div class="row mt-2">
             <div class="col-md-6">
-                <h1>Customer</h1>
+                <h1>USer Kandang</h1>
             </div>
             <div class="col-md-6 text-right">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahModal">
-                    Tambah Customer
+                    Tambah User Kandang
                   </button>
             </div>
         </div>

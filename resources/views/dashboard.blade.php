@@ -10,7 +10,7 @@
               <div class="col-xxl-4 col-md-3">
                 <div class="card info-card user-card">  
                   <div class="card-body">
-                    <h5 class="card-title">Customer Active</h5>
+                    <h5 class="card-title">Kandang Active</h5>
   
                     <div class="d-flex align-items-center">
                       <div class="ps-3">
@@ -24,7 +24,7 @@
               <div class="col-xxl-4 col-md-3">
                 <div class="card info-card user-card">  
                   <div class="card-body">
-                    <h5 class="card-title">Customer Inactive</h5>
+                    <h5 class="card-title">Kandang Inactive</h5>
   
                     <div class="d-flex align-items-center">
                       <div class="ps-3">
@@ -49,24 +49,9 @@
   
                 </div>
               </div>
-              <div class="col-xxl-4 col-md-3">
-                <div class="card info-card user-card">  
-                  <div class="card-body">
-                    <h5 class="card-title">Product Inactive</h5>
-  
-                    <div class="d-flex align-items-center">
-                      <div class="ps-3">
-                        <h5>{{ $product_inactive }}
-                      </div>
-                    </div>
-                  </div>
-  
-                </div>
-              </div>
-              <!-- End user Card -->
   
   
-              <!-- Top Create -->
+              {{-- <!-- Top Create -->
               <div class="col-8">
                 <div class="card top-Create overflow-auto">
   
@@ -105,7 +90,7 @@
                   </div>
   
                 </div>
-              </div><!-- End Top Selling -->
+              </div><!-- End Top Selling --> --}}
   
             </div>
           </div>

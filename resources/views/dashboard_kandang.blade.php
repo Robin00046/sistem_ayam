@@ -10,11 +10,13 @@
         <div class="col-xxl-4 col-md-3">
           <div class="card info-card user-card">
             <div class="card-body">
-              <h5 class="card-title">Customer Active</h5>
+              <h5 class="card-title">Keuntungan Bulan Ini</h5>
 
               <div class="d-flex align-items-center">
                 <div class="ps-3">
-                  <h5>15</h5>
+                  <h5>{{ $test['bulan'] }}</h5>
+                  <h5>{{ $test['keuntungan'] }}</h5>
+
                 </div>
               </div>
             </div>

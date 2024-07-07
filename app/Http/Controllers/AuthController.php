@@ -46,7 +46,7 @@ class AuthController extends Controller
         ]);
 
         // check if user exist
-        $user = User::where('name', $request->name)->first();
+        $user = User::where('name', $request->name)->where('status', 'active')->first();
 
         if (!$user) {
             return back()->with('error', 'User does not exist');

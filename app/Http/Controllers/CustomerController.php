@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Pendapatan;
+use App\Models\Pengeluaran;
 use Illuminate\Http\Request;
 use App\Mail\CustomerPasswordMail;
 use Illuminate\Support\Facades\Mail;
@@ -97,7 +99,13 @@ class CustomerController extends Controller
     {
         // delete customer
         $user = User::find($id);
+        // hapus pendapatan
+        Pendapatan::where('id_kandang', $id)->delete();
+        // hapus pengeluaran
+        Pengeluaran::where('kandang_id', $id)->delete();
+        // hapus user
         $user->delete();
+
         return redirect()->route('customers.index')->with('success', 'Customer deleted successfully');
     }
 
