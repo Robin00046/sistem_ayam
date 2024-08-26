@@ -37,7 +37,7 @@
                 @foreach ($jenisProduks as $product)
                     <tr>
                         <td>{{ $product->nama }}</td>
-                        <td>{{ $product->harga }}</td>
+                        <td>Rp .{{ number_format($product->harga) }}</td>
                         <td>
                             <button title="Edit Data" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal-{{ $product->id }}">
                                 <i class="bi bi-pencil-fill"></i>

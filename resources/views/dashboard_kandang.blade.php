@@ -15,7 +15,7 @@
               <div class="d-flex align-items-center">
                 <div class="ps-3">
                   <h5>{{ $test['bulan'] }}</h5>
-                  <h5>{{ $test['keuntungan'] }}</h5>
+                  <h5>Rp. {{ number_format($test['keuntungan']) }}</h5>
 
                 </div>
               </div>

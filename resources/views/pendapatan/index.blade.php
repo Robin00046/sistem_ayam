@@ -40,9 +40,9 @@
                     <tr>
                         <td>{{ $customer->created_at }}</td>
                         <td>{{ $customer->jumlah }}</td>
-                        <td>{{ $customer->harga }}</td>
+                        <td>Rp .{{ number_format($customer->harga) }}</td>
                         <td>
-                            {{ number_format($customer->jumlah * $customer->harga) }}    
+                            Rp .{{ number_format($customer->jumlah * $customer->harga) }}    
                         </td> 
                     </tr>
                 @endforeach
