@@ -95,6 +95,15 @@
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
                                             </div>
+                                            <div class="form-group
+                                            ">
+                                                <label for="password">password</label>
+                                                <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan password baru jika ingin mengganti password">
+                            
+                                                @error('password')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                 <button type="submit" class="btn btn-primary">Save changes</button>

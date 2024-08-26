@@ -76,14 +76,26 @@ class CustomerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
+        // dd($request->all());
+        // dd($id);
+        $user = User::find($id);
         // edit customer 
         $this->validate($request, [
             'name' => 'required',
-            'alamat' => 'required|alamat|unique:users,alamat,' . $user->id,
+            'alamat' => 'required',
             'phone' => 'required|numeric',
         ]);
+        if ($request->password) {
+            $user->update([
+                'name' => $request->name,
+                'alamat' => $request->alamat,
+                'phone' => $request->phone,
+                'password' => bcrypt($request->password),
+            ]);
+            return redirect()->route('customers.index')->with('success', 'Customer updated successfully');
+        }
         $user->update([
             'name' => $request->name,
             'alamat' => $request->alamat,
